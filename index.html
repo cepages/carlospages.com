@@ -1,0 +1,236 @@
+<!DOCTYPE HTML>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" /> 
+<html>
+	<head>
+		<meta id="view" name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1.0, initial-scale=1">
+		<title>Carlos Pagés - iOS Developer</title>
+		<link rel="stylesheet" type="text/css" href="css/indexStyling.css">
+                <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+                <script type="text/javascript" src="js/jquery.plugin.min.js"></script>
+                <script type="text/javascript" src="js/jquery.countdown.min.js"></script>
+		<script type="text/javascript" src="js/jquery.arctext.js"></script>
+		<script type="text/javascript">
+
+var screenSizeVars = {
+	
+	mobileSize : 767,
+	width : 0,
+	smallScreenSize : 0
+}
+
+function rotate(el,degrees){
+	var elem = document.getElementById(el);
+	if(navigator.userAgent.match("Chrome")){
+		elem.style.WebkitTransform = "rotate("+degrees+"deg)";
+	} else if(navigator.userAgent.match("Firefox")){
+		elem.style.MozTransform = "rotate("+degrees+"deg)";
+	} else if(navigator.userAgent.match("MSIE")){
+		elem.style.msTransform = "rotate("+degrees+"deg)";
+	} else if(navigator.userAgent.match("Opera")){
+		elem.style.OTransform = "rotate("+degrees+"deg)";
+	} else {
+		elem.style.transform = "rotate("+degrees+"deg)";
+	}
+}
+
+var menuOpen = false;
+
+function showMenuTouchedIn (){
+
+      	var imageMenu = document.getElementById("image-menu");
+      	if (menuOpen) {
+      		rotate("submenuButton",0);
+      		menuOpen = false;
+			$("#menuButtons").fadeOut(function() {
+
+			});
+      	}
+      	else{
+      		rotate("submenuButton",180);
+      		menuOpen = true;
+			$("#menuButtons").fadeIn(function() {
+
+			});
+      	}
+}
+
+function screenSize(){
+
+	var currentScreenSize = window.innerWidth;
+
+	if (currentScreenSize > screenSizeVars.mobileSize) {
+		var smallScreenSize = 0;
+	}
+	else{
+		var smallScreenSize = 1;
+	}
+	screenSizeVars.smallScreenSize = smallScreenSize;
+}
+
+$(window).resize(function() {
+
+	screenSize();
+	if (screenSizeVars.smallScreenSize == 0) {
+		$('#menuButtons').show();
+	}
+	else{
+		menuOpen=true;
+		showMenuTouchedIn();
+	}
+});
+
+$(document).ready(function(){
+
+	screenSize();
+
+	if (screenSizeVars.smallScreenSize == 1) {
+
+		$('#menuButtons').hide();
+	};
+
+	$('#form').submit(function () {
+		var frm = $('#form');
+
+		$.ajax({
+			type: frm.attr('method'),
+  			url: frm.attr('action'),
+  			data: frm.serialize(),
+  			success: function(data) {
+  				window.alert("Email sent, thanks! :)");
+  				document.getElementById("form").reset();
+
+  				$('.result').html(data)
+  			},
+      		error: function () {
+      			window.alert("there was an error");
+
+          		$('#output').html('Bummer: there was an error!');
+      		}
+		});
+
+ 		return false;
+	});
+
+    $("#text_form_contact").hide();
+
+
+	$("#sayHelloButton").click(function(){
+
+		$(this).addClass("activeButton");
+		$(this).removeClass("desactiveButton");
+		
+		$(aboutMeButton).addClass("desactiveButton");
+		$(aboutMeButton).removeClass("activeButton");
+
+
+        $("#text_content").fadeOut(function() {
+			// Animation complete
+
+        	$("#text_form_contact").fadeIn();
+        } );
+    });
+
+	$("#aboutMeButton").click(function(){
+		$(this).addClass("activeButton");
+		$(this).removeClass("desactiveButton");
+		
+		$(sayHelloButton).addClass("desactiveButton");
+		$(sayHelloButton).removeClass("activeButton");
+
+        $("#text_form_contact").fadeOut(function() {
+			// Animation complete
+        	$("#text_content").fadeIn();
+        } );
+    });
+
+var profile = $(".imageProfile");
+
+if(!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ) {
+	$(document).on("mousemove",function(e) {
+  
+  		var ax = -25/(($(window).innerWidth()/2) /e.pageX);
+  		var ay = 25/(($(window).innerHeight()/2) / e.pageY);
+  		if(ax < -25){
+			ax = -25;
+  		} 
+  		if(ay > 25){
+ 			ay = 25;
+  		}
+  		profile.attr("style", "transform: rotateY("+ax+"deg) rotateX("+ay+"deg);-webkit-transform: rotateY("+ax+"deg) rotateX("+ay+"deg);-moz-transform: rotateY("+ax+"deg) rotateX("+ay+"deg)");
+	});
+}
+
+
+});
+
+		</script>
+
+	</head>
+	<body>
+
+        <div id="full_content">
+        	
+			<nav id="navProfile">
+				<div class="imageProfile">
+					<img id="image-menu" class="img-circle" src="media/carlosImage.jpg">
+				</div>
+				<a href="#" class="submenu" onclick='return showMenuTouchedIn()' id="submenuButton">Menus</a>
+
+				<div id="subtitleImage">
+					<div id="subtitleImageText">
+						<h3>Hola.<br>I'm Carlos</h3>
+					</div>
+					<ul id="menuButtons">
+						<li>
+							<div id="aboutMeButton" class="semiTransparent activeButton">
+								<button>About me</button>
+							</div>
+						</li>
+						<li>
+							<div id="sayHelloButton" class="semiTransparent desactiveButton">
+								<button >Say hello!</button>
+							</div>
+						</li>
+					</ul>
+				</div>
+				
+			</nav>
+			<div id="content">
+					<section>
+						<h2>iOS Developer</h2>
+						<!-- About me section -->
+						<div id="text_content">
+							<h3> I love developing apps for iOS in Objective-C and sometimes in Swift. Every once in a while I cheat on Apple and I play with small projects with Android </h3>
+							<h3> Currently I work at <a href= "https://www.incuna.com/en/" target="_blank"> Incuna </a> based in Oxford, (great city for living). We develop Health Apps and websites.</h3>
+							<h3> XBox gamer and train enthusiast</h3>
+							<h3>If you would like to know more about some of my projects or just want to say hello, just drop me an email</h3>
+						</div>
+						<!-- Contact section -->
+						<div id="text_form_contact">	
+							<div class="form">
+								<form id="form" method="post" action="formEmail.php">
+
+									<div class="form-group has-feedback">
+										<input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+									</div>
+
+									<div class="form-group has-feedback">
+										<input type="email" class="form-control" id="email" name="email" placeholder="E-mail" required>
+									</div>
+
+									<div class="form-group has-feedback">
+										<textarea class="form-control" rows="8" id="message" placeholder="Message" name="message" required></textarea>
+									</div>
+									<div id="sayHelloButton" class="semiTransparent">
+											<input type="submit" name='submit' value="submit" class = "activeButton">
+									</div>
+								</form>
+							</div>
+						</div>
+					</section>
+			</div>
+
+		</div>
+	</body>
+</html>
